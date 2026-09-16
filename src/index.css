@@ -12,6 +12,8 @@ body {
   font-family: var(--font-sans);
   color: #111111;
   background-color: #FAFAF8;
+  word-break: keep-all;
+  overflow-wrap: break-word;
 }
 
 /* Custom minimal scrollbar */

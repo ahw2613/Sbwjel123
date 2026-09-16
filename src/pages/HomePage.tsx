@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState } from 'react';
 import { Property } from '../types';
 import { useLanguage } from '../context/LanguageContext';
 import { translations } from '../data/translations';
@@ -8,7 +8,7 @@ import { PropertyMap } from '../components/PropertyMap';
 import { ServicesProcessSection } from '../components/ServicesProcessSection';
 import { ClientReviewsSection } from '../components/ClientReviewsSection';
 import { SocialNewsSection } from '../components/SocialNewsSection';
-import { Search, ChevronRight, Video, Image as ImageIcon, Play, Pause, ArrowDown } from 'lucide-react';
+import { Search, ChevronRight, ArrowDown } from 'lucide-react';
 
 interface HomePageProps {
   properties: Property[];
@@ -26,11 +26,6 @@ export const HomePage: React.FC<HomePageProps> = ({ properties, onNavigate, onSe
   const [maxPrice, setMaxPrice] = useState<number>(0);
   const [showFilters, setShowFilters] = useState(false);
 
-  // Hero Media Mode: Video vs Ultra-HD Image
-  const [heroMediaMode, setHeroMediaMode] = useState<'video' | 'photo'>('video');
-  const [isVideoPlaying, setIsVideoPlaying] = useState(true);
-  const videoRef = useRef<HTMLVideoElement>(null);
-
   const featuredListings = properties
     .filter((p) => p.featured || p.id === 'prop-1' || p.id === 'prop-2' || p.id === 'prop-3' || p.id === 'prop-4')
     .slice(0, 4);
@@ -47,17 +42,6 @@ export const HomePage: React.FC<HomePageProps> = ({ properties, onNavigate, onSe
     onNavigate(intent === 'buy' ? 'buy' : 'rent');
   };
 
-  const toggleVideoPlayback = () => {
-    if (!videoRef.current) return;
-    if (videoRef.current.paused) {
-      videoRef.current.play();
-      setIsVideoPlaying(true);
-    } else {
-      videoRef.current.pause();
-      setIsVideoPlaying(false);
-    }
-  };
-
   const scrollToServices = () => {
     const el = document.getElementById('services-process-section');
     if (el) {
@@ -67,87 +51,36 @@ export const HomePage: React.FC<HomePageProps> = ({ properties, onNavigate, onSe
 
   return (
     <div className="space-y-24 sm:space-y-32">
-      {/* 1. HERO SECTION WITH DUAL VIDEO / ULTRA-HD PHOTO */}
-      <section className="relative min-h-[640px] lg:min-h-[780px] flex items-center justify-center text-white overflow-hidden">
-        {/* Background Layer */}
+      {/* 1. HERO SECTION: IMAGE-ONLY ARCHITECTURAL VISUAL */}
+      <section className="relative min-h-[640px] lg:min-h-[760px] flex items-center justify-center text-white overflow-hidden">
+        {/* Architectural Image Background Layer */}
         <div className="absolute inset-0 -z-10 bg-neutral-950 overflow-hidden">
-          {heroMediaMode === 'video' ? (
-            <video
-              ref={videoRef}
-              autoPlay
-              loop
-              muted
-              playsInline
-              className="w-full h-full object-cover object-center opacity-85 brightness-90 transition-opacity duration-1000"
-              poster="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=2400&q=85"
-            >
-              <source
-                src="https://assets.mixkit.co/videos/preview/mixkit-modern-apartment-interior-design-41088-large.mp4"
-                type="video/mp4"
-              />
-              {/* Fallback image */}
-              <img
-                src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=2400&q=85"
-                alt="North Jersey Real Estate"
-                className="w-full h-full object-cover"
-              />
-            </video>
-          ) : (
-            <img
-              src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=2400&q=85"
-              alt="North Jersey Real Estate"
-              className="w-full h-full object-cover object-center opacity-85 brightness-90 animate-in fade-in duration-700"
-            />
-          )}
-
-          {/* Deep architectural gradients for legibility */}
+          <img
+            src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=2400&q=85"
+            alt="THE ADDRESS North Jersey Luxury Real Estate"
+            className="w-full h-full object-cover object-center brightness-90 animate-in fade-in duration-700"
+          />
+          {/* Subtle multi-stop architectural gradients for crystal-clear legibility */}
           <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/45 to-black/35" />
         </div>
 
-        {/* Media Mode & Playback Controls in Top Right */}
-        <div className="absolute top-6 right-6 sm:top-8 sm:right-10 z-20 flex items-center space-x-2 bg-black/60 backdrop-blur-md px-3 py-1.5 border border-white/15 text-[11px] font-medium tracking-wide">
-          <button
-            onClick={() => setHeroMediaMode(heroMediaMode === 'video' ? 'photo' : 'video')}
-            className="flex items-center gap-1.5 text-neutral-300 hover:text-white transition-colors cursor-pointer"
-            title="Toggle Video / High-Res Photo"
-          >
-            {heroMediaMode === 'video' ? (
-              <>
-                <Video size={13} className="text-white" />
-                <span>{t.heroControls.videoMode}</span>
-              </>
-            ) : (
-              <>
-                <ImageIcon size={13} className="text-white" />
-                <span>{t.heroControls.photoMode}</span>
-              </>
-            )}
-          </button>
-
-          {heroMediaMode === 'video' && (
-            <>
-              <span className="text-neutral-500">|</span>
-              <button
-                onClick={toggleVideoPlayback}
-                className="text-neutral-300 hover:text-white transition-colors cursor-pointer p-0.5"
-                title={isVideoPlaying ? t.heroControls.pause : t.heroControls.play}
-              >
-                {isVideoPlaying ? <Pause size={12} /> : <Play size={12} className="fill-white" />}
-              </button>
-            </>
-          )}
-        </div>
-
-        {/* Hero Central Content */}
+        {/* Hero Central Content with Natural Line Wrapping */}
         <div className="w-full max-w-5xl mx-auto px-6 py-20 text-center relative z-10">
           <div className="text-xs sm:text-sm font-semibold tracking-[0.3em] uppercase text-neutral-300 mb-3">
             {t.hero.tagline}
           </div>
-          <h1 className="text-3xl sm:text-5xl lg:text-6xl font-normal tracking-tight max-w-3xl mx-auto leading-tight sm:leading-none text-white">
+          <h1 className="text-3xl sm:text-5xl lg:text-6xl font-normal tracking-tight max-w-4xl mx-auto leading-tight sm:leading-none text-white break-keep">
             {t.hero.headline}
           </h1>
-          <p className="mt-4 text-sm sm:text-base text-neutral-300 max-w-2xl mx-auto font-light leading-relaxed">
-            {t.hero.subheadline}
+          <p className="mt-4 text-sm sm:text-base text-neutral-200 max-w-2xl mx-auto font-light leading-relaxed break-keep">
+            {language === 'ko' ? (
+              <>
+                버겐 &amp; 허드슨 카운티 전역의 주택 매매, 프리미엄 렌트,<br className="hidden sm:inline" />
+                신뢰할 수 있는 현지 전문 부동산 자문을 제공합니다.
+              </>
+            ) : (
+              t.hero.subheadline
+            )}
           </p>
 
           {/* Search Bar Interface */}
@@ -202,7 +135,7 @@ export const HomePage: React.FC<HomePageProps> = ({ properties, onNavigate, onSe
               {/* Quick Filters Toggle Bar */}
               <div className="flex flex-wrap items-center justify-between pt-2 text-xs text-neutral-500 gap-2">
                 <div className="flex items-center gap-2">
-                  <span className="text-neutral-400">{language === 'ko' ? '추천 검색:' : 'Popular:'}</span>
+                  <span className="text-neutral-400">{language === 'ko' ? '추천 지역:' : 'Popular:'}</span>
                   {['Fort Lee', 'Palisades Park', 'Edgewater', 'Tenafly', 'Closter'].map((city) => (
                     <button
                       key={city}
@@ -289,18 +222,28 @@ export const HomePage: React.FC<HomePageProps> = ({ properties, onNavigate, onSe
 
       {/* 2. FEATURED CURATED PROPERTIES */}
       <section className="max-w-7xl mx-auto px-6 md:px-10">
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-8 gap-4">
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-8 gap-4 border-b border-neutral-200 pb-6">
           <div>
-            <h2 className="text-xs font-semibold tracking-[0.25em] text-neutral-500 uppercase">
+            <div className="text-xs font-semibold tracking-[0.25em] text-neutral-500 uppercase mb-2">
               {t.home.featuredTitle}
-            </h2>
-            <p className="mt-1 text-2xl sm:text-3xl font-normal text-neutral-950 tracking-tight">
+            </div>
+            <h2 className="text-2xl sm:text-4xl font-normal tracking-tight text-neutral-950 leading-tight break-keep">
               {language === 'ko' ? '노스저지 엄선 추천 매물' : 'Curated North Jersey Residences'}
+            </h2>
+            <p className="mt-2 text-sm sm:text-base text-neutral-600 max-w-2xl font-light leading-relaxed break-keep">
+              {language === 'ko' ? (
+                <>
+                  입지, 학군, 건축 완성도를 엄격하게 검증하여 선별한<br className="hidden sm:inline" />
+                  노스저지 대표 추천 매물입니다.
+                </>
+              ) : (
+                t.home.featuredSubtitle
+              )}
             </p>
           </div>
           <button
             onClick={() => onNavigate('properties')}
-            className="inline-flex items-center text-xs font-semibold tracking-wider text-neutral-950 uppercase hover:text-neutral-600 transition-colors cursor-pointer group"
+            className="inline-flex items-center text-xs font-semibold tracking-wider text-neutral-950 uppercase hover:text-neutral-600 transition-colors cursor-pointer group flex-shrink-0"
           >
             <span>{t.home.viewAllProperties}</span>
             <ChevronRight size={16} className="ml-1 group-hover:translate-x-1 transition-transform" />
@@ -319,24 +262,34 @@ export const HomePage: React.FC<HomePageProps> = ({ properties, onNavigate, onSe
         </div>
       </section>
 
-      {/* 3. REAL ESTATE SERVICES & STEP-BY-STEP PROCESS */}
+      {/* 3. HOME PROCESS & SERVICES SECTION (Concise, consistent with other sections) */}
       <ServicesProcessSection onNavigate={onNavigate} />
 
       {/* 4. EXPLORE NORTH JERSEY COMMUNITIES */}
       <section className="bg-stone-100/70 py-20 border-y border-stone-200/80">
         <div className="max-w-7xl mx-auto px-6 md:px-10">
-          <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-10 gap-4">
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-10 gap-4 border-b border-stone-300/80 pb-6">
             <div>
-              <h2 className="text-xs font-semibold tracking-[0.25em] text-neutral-500 uppercase">
+              <div className="text-xs font-semibold tracking-[0.25em] text-neutral-500 uppercase mb-2">
                 {t.home.exploreNorthJersey}
+              </div>
+              <h2 className="text-2xl sm:text-4xl font-normal tracking-tight text-neutral-950 leading-tight break-keep">
+                {language === 'ko' ? '버겐 & 허드슨 카운티 주요 타운' : 'Premier Commuting Communities'}
               </h2>
-              <p className="mt-1 text-2xl sm:text-3xl font-normal text-neutral-950 tracking-tight">
-                {t.home.exploreSubtitle}
+              <p className="mt-2 text-sm sm:text-base text-neutral-600 max-w-2xl font-light leading-relaxed break-keep">
+                {language === 'ko' ? (
+                  <>
+                    맨해튼 출퇴근 동선, 우수 학군, 주거 환경에 맞춘<br className="hidden sm:inline" />
+                    노스저지 핵심 타운 심층 가이드입니다.
+                  </>
+                ) : (
+                  t.home.exploreSubtitle
+                )}
               </p>
             </div>
             <button
               onClick={() => onNavigate('communities')}
-              className="inline-flex items-center text-xs font-semibold tracking-wider text-neutral-950 uppercase hover:text-neutral-600 transition-colors cursor-pointer group"
+              className="inline-flex items-center text-xs font-semibold tracking-wider text-neutral-950 uppercase hover:text-neutral-600 transition-colors cursor-pointer group flex-shrink-0"
             >
               <span>{language === 'ko' ? '전체 지역 가이드' : 'All Communities'}</span>
               <ChevronRight size={16} className="ml-1 group-hover:translate-x-1 transition-transform" />
@@ -348,7 +301,7 @@ export const HomePage: React.FC<HomePageProps> = ({ properties, onNavigate, onSe
               <div
                 key={comm.id}
                 onClick={() => onNavigate('community-detail', comm.slug)}
-                className="group cursor-pointer bg-white overflow-hidden transition-all duration-300"
+                className="group cursor-pointer bg-white overflow-hidden transition-all duration-300 border border-neutral-200 hover:border-neutral-900"
               >
                 <div className="relative aspect-[16/10] overflow-hidden bg-neutral-100">
                   <img
@@ -368,7 +321,7 @@ export const HomePage: React.FC<HomePageProps> = ({ properties, onNavigate, onSe
                 </div>
 
                 <div className="p-5">
-                  <p className="text-xs text-neutral-600 line-clamp-2 leading-relaxed">
+                  <p className="text-xs text-neutral-600 line-clamp-2 leading-relaxed break-keep">
                     {language === 'ko' ? comm.taglineKo : comm.taglineEn}
                   </p>
                   <div className="mt-4 pt-3 border-t border-neutral-100 flex items-center justify-between text-xs text-neutral-500 font-medium">
@@ -386,16 +339,19 @@ export const HomePage: React.FC<HomePageProps> = ({ properties, onNavigate, onSe
 
       {/* 5. PROPERTY DISCOVERY INTERACTIVE MAP */}
       <section className="max-w-7xl mx-auto px-6 md:px-10">
-        <div className="mb-6">
-          <h2 className="text-xs font-semibold tracking-[0.25em] text-neutral-500 uppercase">
+        <div className="mb-6 border-b border-neutral-200 pb-4">
+          <div className="text-xs font-semibold tracking-[0.25em] text-neutral-500 uppercase mb-2">
             {t.home.mapSectionTitle}
+          </div>
+          <h2 className="text-2xl sm:text-4xl font-normal tracking-tight text-neutral-950 leading-tight break-keep">
+            {language === 'ko' ? '노스저지 부동산 인터랙티브 지도' : 'Interactive Geographic Discovery'}
           </h2>
-          <p className="mt-1 text-2xl sm:text-3xl font-normal text-neutral-950 tracking-tight">
+          <p className="mt-1 text-sm text-neutral-600 max-w-2xl font-light leading-relaxed break-keep">
             {t.home.mapSectionSubtitle}
           </p>
         </div>
 
-        <div className="h-[480px] w-full border border-neutral-200">
+        <div className="h-[480px] w-full border border-neutral-200 shadow-xs">
           <PropertyMap
             properties={properties}
             className="w-full h-full"
@@ -404,7 +360,7 @@ export const HomePage: React.FC<HomePageProps> = ({ properties, onNavigate, onSe
         </div>
       </section>
 
-      {/* 6. CLIENT REVIEWS & VERIFIED STORIES */}
+      {/* 6. CLIENT REVIEWS & VERIFIED STORIES (Horizontal Single-Row Slider) */}
       <ClientReviewsSection />
 
       {/* 7. SNS & MEDIA SECTION (YouTube, Instagram, Load More) */}
@@ -417,11 +373,18 @@ export const HomePage: React.FC<HomePageProps> = ({ properties, onNavigate, onSe
             <div className="text-xs font-semibold tracking-[0.25em] text-neutral-400 uppercase">
               {language === 'ko' ? '주택 매도 자문' : 'Seller Advisory'}
             </div>
-            <h2 className="text-2xl sm:text-4xl font-normal tracking-tight text-white leading-tight">
+            <h2 className="text-2xl sm:text-4xl font-normal tracking-tight text-white leading-tight break-keep">
               {t.home.sellTeaserTitle}
             </h2>
-            <p className="text-sm sm:text-base text-neutral-300 font-light leading-relaxed">
-              {t.home.sellTeaserDesc}
+            <p className="text-sm sm:text-base text-neutral-300 font-light leading-relaxed break-keep">
+              {language === 'ko' ? (
+                <>
+                  최근 실거래 데이터 기반의 정밀 가치 평가부터 맞춤 스테이징,<br className="hidden sm:inline" />
+                  현지 바이어 네트워크를 통해 최고 가치의 매도를 실현합니다.
+                </>
+              ) : (
+                t.home.sellTeaserDesc
+              )}
             </p>
             <div className="pt-4 flex flex-wrap gap-4">
               <button
@@ -431,10 +394,10 @@ export const HomePage: React.FC<HomePageProps> = ({ properties, onNavigate, onSe
                 {t.home.sellTeaserCta}
               </button>
               <button
-                onClick={() => onNavigate('contact')}
+                onClick={() => onNavigate('process')}
                 className="px-8 py-3.5 border border-neutral-600 text-white text-xs font-semibold tracking-wider uppercase hover:border-white transition-colors cursor-pointer"
               >
-                {language === 'ko' ? '전문가 1:1 상담 예약' : 'Schedule a Consultation'}
+                {language === 'ko' ? '매도 프로세스 상세 보기' : 'View Seller Process'}
               </button>
             </div>
           </div>

@@ -10,6 +10,7 @@ import { PropertyDetailPage } from './pages/PropertyDetailPage';
 import { CommunitiesPage } from './pages/CommunitiesPage';
 import { CommunityDetailPage } from './pages/CommunityDetailPage';
 import { SellPage } from './pages/SellPage';
+import { ProcessPage } from './pages/ProcessPage';
 import { AboutPage } from './pages/AboutPage';
 import { ContactPage } from './pages/ContactPage';
 
@@ -174,6 +175,8 @@ function AppContent() {
         )}
 
         {currentPage === 'sell' && <SellPage />}
+
+        {currentPage === 'process' && <ProcessPage onNavigate={navigateTo} />}
 
         {currentPage === 'about' && <AboutPage />}
 

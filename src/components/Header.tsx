@@ -17,6 +17,7 @@ export const Header: React.FC<HeaderProps> = ({ currentPage, onNavigate }) => {
     { id: 'buy', label: t.buy },
     { id: 'rent', label: t.rent },
     { id: 'sell', label: t.sell },
+    { id: 'process', label: t.process },
     { id: 'properties', label: t.properties },
     { id: 'communities', label: t.communities },
     { id: 'about', label: t.about },
