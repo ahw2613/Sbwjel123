@@ -121,3 +121,59 @@ export interface ContactSubmission {
   budget: string;
   message: string;
 }
+
+export interface SocialPost {
+  id: string;
+  platform: 'youtube' | 'instagram';
+  titleKo: string;
+  titleEn: string;
+  channelName: string;
+  thumbnail: string;
+  date: string;
+  metric: string;
+  videoDuration?: string;
+  videoEmbedUrl?: string;
+  externalUrl: string;
+  captionKo: string;
+  captionEn: string;
+}
+
+export interface ClientReview {
+  id: string;
+  clientName: string;
+  clientNameKo: string;
+  clientTypeKo: string;
+  clientTypeEn: string;
+  location: string;
+  rating: number;
+  quoteKo: string;
+  quoteEn: string;
+  storyKo: string;
+  storyEn: string;
+  date: string;
+  transactionType: 'buy' | 'sell' | 'rent';
+}
+
+export interface ServiceProcessStep {
+  step: string;
+  titleKo: string;
+  titleEn: string;
+  descKo: string;
+  descEn: string;
+  keyHighlightKo?: string;
+  keyHighlightEn?: string;
+}
+
+export interface RealEstateService {
+  id: 'sell' | 'rent' | 'buy';
+  titleKo: string;
+  titleEn: string;
+  taglineKo: string;
+  taglineEn: string;
+  summaryKo: string;
+  summaryEn: string;
+  steps: ServiceProcessStep[];
+  ctaKo: string;
+  ctaEn: string;
+  targetPage: string;
+}
