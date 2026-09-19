@@ -31,3 +31,15 @@ body {
 ::-webkit-scrollbar-thumb:hover {
   background: #9CA3AF;
 }
+
+/* THE ADDRESS hero — full-bleed American / New Jersey real-estate visual */
+main > div > section:first-child {
+  background-image: url('https://isteam.wsimg.com/ip/f0beb277-92e1-4d71-b601-498596c83446/hma.jpg');
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+}
+
+main > div > section:first-child > div:first-child img {
+  opacity: 0;
+}
